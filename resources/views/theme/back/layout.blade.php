@@ -13,6 +13,7 @@
     <title>{{ config('app.name')}} - @yield('title', 'Inicio')</title>
     <!-- Custom CSS -->
     <link href="{{asset("assets/back/css/style.min.css")}}" rel="stylesheet">
+    <link href="{{asset("assets/back/css/custom.css")}}" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -54,6 +55,13 @@
         <!-- ============================================================== -->
         <div class="page-wrapper">
             <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            @yield('page-breadcrumb')
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
@@ -91,8 +99,17 @@
     <script src="{{asset("assets/back/js/waves.js")}}"></script>
     <!--Menu sidebar -->
     <script src="{{asset("assets/back/js/sidebarmenu.js")}}"></script>
+    <!-- Plugins -->
+    <script src="{{asset("assets/back/libs/jquery-validation/dist/jquery.validate.min.js")}}"></script>
+    <script src="{{asset("assets/back/libs/jquery-validation/dist/localization/messages_es.js")}}"></script>
+    <!-- Plugins of specific pages -->
+    @stack('scriptsPlugins')
+    <!-- Scripts of specific pages -->
+    @stack('scripts')
     <!--Custom JavaScript -->
     <script src="{{asset("assets/back/js/custom.min.js")}}"></script>
+
+    <script src="{{asset("assets/back/js/funciones.js")}}"></script>
 </body>
 
 </html>
