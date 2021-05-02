@@ -15,7 +15,7 @@ Sistema Menús
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{route("admin")}}">Admin</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Crear Menú</li>
+                        <li class="breadcrumb-item active" aria-current="page">Editar Menú</li>
                     </ol>
                 </nav>
             </div>
@@ -27,19 +27,17 @@ Sistema Menús
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
-            @if ($mensaje = session("mensaje"))
-            <x-alert tipo="success" :mensaje="$mensaje" />
-            @endif
-            @if ($errors->any())
+        @if ($errors->any())
             <x-alert tipo="danger" :mensaje="$errors" />
             @endif
-            <div class="card-header">
-                Crear Menús
+        <div class="card">
+            <div class="card-header bg-success">
+                <h5 class="text-white float-left">Editar Menú {{$data->name}}</h5>
+                <a href="{{route('menu')}}" class="btn btn-outline-light btn-sm float-right">Volver al listado</a>
             </div>
-            <form action="{{route("menu.store")}}" id="form-general" class="form-horizontal" method="POST"
+            <form action="{{route("menu.update", $data->id)}}" id="form-general" class="form-horizontal" method="POST"
                 autocomplete="off">
-                @csrf
+                @csrf @method('put')
                 <div class="card-body">
                     @include('theme.back.menu.form')
                 </div>
@@ -49,7 +47,7 @@ Sistema Menús
                             <div class="col-sm-3"></div>
                             <div class="col-sm-5">
                                 <button type="submit" class="btn btn-success"><i class="mdi mdi-download"></i>
-                                    Guardar</button>
+                                    Actualizar</button>
                             </div>
                         </div>
                     </div>

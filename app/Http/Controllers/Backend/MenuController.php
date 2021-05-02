@@ -16,8 +16,8 @@ class MenuController extends Controller
      */
     public function index()
     {
-
-        return view('theme.back.menu.index');
+        $menus = Menu::getMenu();
+        return view('theme.back.menu.index', compact('menus'));
     }
 
     /**
@@ -40,7 +40,7 @@ class MenuController extends Controller
     {
         $request->request->add(['createdby' => auth()->user()->user]);
         Menu::create($request->all());
-        return redirect()->route('menu.create')->with('mensaje', 'Menú creado correctamente');
+        return redirect()->route('menu')->with('mensaje', 'Menú creado correctamente');
     }
 
     /**
@@ -62,7 +62,8 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Menu::findOrFail($id);
+        return view('theme.back.menu.edit', compact('data'));
     }
 
     /**
@@ -72,9 +73,11 @@ class MenuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidacionMenu $request, $id)
     {
-        //
+        $request->request->add(['updatedby' => auth()->user()->user]);
+        Menu::findOrFail($id)->update($request->all());
+        return redirect()->route('menu')->with('mensaje', 'Menú actualizado correctamente');
     }
 
     /**
@@ -85,6 +88,7 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Menu::destroy($id);
+        return redirect()->route('menu')->with('mensaje', 'Menú eliminado con exito');
     }
 }

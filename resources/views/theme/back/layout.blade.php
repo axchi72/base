@@ -13,6 +13,8 @@
     <title>{{ config('app.name')}} - @yield('title', 'Inicio')</title>
     <!-- Custom CSS -->
     <link href="{{asset("assets/back/css/style.min.css")}}" rel="stylesheet">
+    <!-- CSS DINAMICO -->
+    @stack('styles')
     <link href="{{asset("assets/back/css/custom.css")}}" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
