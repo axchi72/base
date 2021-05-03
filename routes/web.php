@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\MenuController;
+use App\Http\Controllers\Backend\MenuRoleController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,7 @@ Route::group(['prefix' => 'admin-backend', 'middleware' => ['auth']], function (
     Route::post('menu/guardar-orden', [MenuController::class, 'guardarOrden'])->name('menu.orden');
     Route::put('menu/{id}', [MenuController::class, 'update'])->name('menu.update');
     Route::delete('menu/{id}/eliminar', [MenuController::class, 'destroy'])->name('menu.destroy');
+    /*RUTAS DEL MENU ROLE*/
+    Route::get('menu-role', [MenuRoleController::class, 'index'])->name('menu-role');
+    Route::post('menu-role', [MenuRoleController::class, 'store'])->name('menu-role.store');
 });

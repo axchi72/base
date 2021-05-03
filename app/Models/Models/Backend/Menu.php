@@ -13,7 +13,7 @@ class Menu extends Model
     protected $guarded = ['id'];
 
     public function roles(){
-        return $this->belongsToMany(Role::class, 'menus_roles', 'menu_id', 'role_id');
+        return $this->belongsToMany(Role::class, 'menus_roles');
     }
 
     private function getMenuPadres($front)
@@ -38,7 +38,7 @@ class Menu extends Model
         $hijos = [];
         foreach ($padres as $line2) {
             if ($line['id'] == $line2['menu_id']) {
-                $hijos = array_merge($hijos, [array_merge($line2, ['submenu' => $this->getHijos($padres, $line)])]);
+                $hijos = array_merge($hijos, [array_merge($line2, ['submenu' => $this->getMenuHijos($padres, $line2)])]);
             }
         }
         return $hijos;
@@ -56,5 +56,26 @@ class Menu extends Model
             $menuAll = array_merge($menuAll, $item);
         }
         return $menuAll;
+    }
+
+    public static function guardarOrden($menu)
+    {
+        $menus = json_decode($menu);
+        foreach ($menus as $var => $menu) {
+            self::where('id', $menu->id)->update(['menu_id' => null, 'orden' => $var + 1]);
+            if (!empty($menu->children)) {
+                self::guardarOrdenHijos($menu->children, $menu);
+            }
+        }
+    }
+
+    private static function guardarOrdenHijos($hijos, $padre)
+    {
+        foreach ($hijos as $key => $hijo) {
+            self::where('id', $hijo->id)->update(['menu_id' => $padre->id, 'orden' => $key + 1]);
+            if (!empty($hijo->children)) {
+                self::guardarOrdenHijos($hijo->children, $hijo);
+            }
+        }
     }
 }

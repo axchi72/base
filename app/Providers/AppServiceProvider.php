@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Models\Backend\Menu;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer("theme.back.aside", function ($view) {
+            $rol_id = session()->get('role_id');
+            $menuP = cache()->tags('Menu')->rememberForever("MenuPrincipal.rolid.$rol_id", function () {
+                return Menu::getMenu(true);
+            });
+            $view->with('menuPrincipal', $menuP);
+        });
     }
 }

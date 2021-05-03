@@ -40,6 +40,7 @@ class MenuController extends Controller
     {
         $request->request->add(['createdby' => auth()->user()->user]);
         Menu::create($request->all());
+        cache()->tags('Menu')->flush();
         return redirect()->route('menu')->with('mensaje', 'Menú creado correctamente');
     }
 
@@ -77,6 +78,7 @@ class MenuController extends Controller
     {
         $request->request->add(['updatedby' => auth()->user()->user]);
         Menu::findOrFail($id)->update($request->all());
+        cache()->tags('Menu')->flush();
         return redirect()->route('menu')->with('mensaje', 'Menú actualizado correctamente');
     }
 
@@ -89,6 +91,18 @@ class MenuController extends Controller
     public function destroy($id)
     {
         Menu::destroy($id);
+        cache()->tags('Menu')->flush();
         return redirect()->route('menu')->with('mensaje', 'Menú eliminado con exito');
+    }
+
+    public function guardarOrden(Request $request)
+    {
+        if ($request->ajax()) {
+            Menu::guardarOrden($request->menu);
+            cache()->tags('Menu')->flush();
+            return response()->json(['respuesta' => 'ok']);
+        } else {
+            abort(404);
+        }
     }
 }
